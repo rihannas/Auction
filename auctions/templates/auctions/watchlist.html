@@ -1,0 +1,36 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<h2>Watchlist</h2>
+
+
+    
+    <div class="container">
+        {%for item in watchlistItems%}
+        <div class="card" style="width: 18rem;">
+            <img src="{{item.image_url}}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{item.title}}</h5>
+                <p class="card-text">{{item.description}}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Category: {{item.category}}</li>
+                <li class="list-group-item">Bid: ${{item.starting_bid.bid}}</li>
+            </ul>
+            <div class="card-body">
+                <a href="{% url 'listing' item.id%}" class="btn btn-primary">View Listing</a>
+            </div>
+        </div>
+
+    {%empty%}
+    <div id='no-item' class="alert alert-dark" role="alert">
+        No Listing
+    </div>
+    {%endfor%}
+    </div>
+    
+
+    
+
+{%endblock%}

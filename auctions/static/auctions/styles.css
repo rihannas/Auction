@@ -1,0 +1,45 @@
+body {
+    padding: 5px;
+}
+
+h2{
+    margin-left: 15px;
+}
+
+h4 {
+    margin-left: 15px;
+    margin-top: 5px;
+}
+
+#index-label {
+    margin-left: 15px;
+}
+
+.container {
+    margin-top: 40px;
+    margin-left: 35px;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.card {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 25px;
+}
+
+#remove, #add {
+    position:absolute;
+    right: 10px;
+}
+
+#auction{
+    position: absolute;
+    right: 220px;
+}
+
+#comment {
+    margin-left: 0px;
+}
+

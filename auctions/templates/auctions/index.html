@@ -1,0 +1,43 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+
+    <form action="{%url 'index'%}" method="post">
+        {%csrf_token%}
+        <label id='index-label'for="category">Choose a category:</label>
+        <select class="form-select" aria-label="Default select example" name="category">
+            {% for category in categories%}
+            <option value="{{category}}">{{category.title}}</option>
+            {% endfor %}
+            <option value="all">All</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <div class="container">
+    {% for listing in listings%}
+        <div class="card" style="width: 18rem;">
+            {%if listing.image_url%}
+            <img src="{{listing.image_url}}" class="card-img-top" alt="...">
+            {%endif%}
+            <div class="card-body">
+                <h5 class="card-title">{{listing.title}}</h5>
+                <p class="card-text">{{listing.description}}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Category: {{listing.category}}</li>
+                <li class="list-group-item">Bid: ${{listing.starting_bid.bid}}</li>
+            </ul>
+            <div class="card-body">
+                <a href="{% url 'listing' listing.id%}" class="btn btn-primary">View Listing</a>
+            </div>
+        </div>
+        {%empty%}
+        <div id='no-item' class="alert alert-dark" role="alert">
+            No Listing
+        </div>
+    {%endfor%}
+    </div>
+{% endblock %}

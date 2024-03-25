@@ -1,0 +1,85 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+{% if user.is_authenticated%}
+
+    {% if update%}
+    <div class="alert alert-success" role="alert">
+        {{message}}
+    </div>
+    {% elif update == False %}
+    <div class="alert alert-danger" role="alert">
+        {{message}}
+    </div>
+    {% endif %}
+
+    {%if closeAuc%}
+    <div class="alert alert-success" role="alert">
+        {{closeAuc}}
+    </div>
+    {% endif %}
+    <h2>{{item.title}} by {{item.owner}}</h2>
+
+    {% if inWatchlist %}
+    <form action="{%url 'remove-watchlist' item.id%}" method="post">
+        {%csrf_token%}
+        <button id='remove'type="submit" class="btn btn-danger">Remove from watchlist</button>
+    </form>
+    {%else%}
+    <form action="{%url 'add-watchlist' item.id%}" method="post">
+        {%csrf_token%}
+        <button id='add' type="submit" class="btn btn-primary">Add from watchlist</button>
+    </form>
+    {% endif %}
+
+    {% if isOwner%}
+        <form action="{%url 'close-auction' item.id%}" method="post">
+            {%csrf_token%}
+            <button id='auction'type="submit" class="btn btn-warning">Close Auction</button>
+        </form>
+    {%endif%}
+
+
+
+{%endif%}
+
+<div class="container">
+    <div class="card" style="width: 18rem;">
+        {%if item.image_url%}
+        <img src="{{item.image_url}}" class="card-img-top" alt="...">
+        {%endif%}
+        <div class="card-body">
+            <h5 class="card-title">{{item.title}}</h5>
+            <p class="card-text">{{item.description}}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Category: {{item.category}}</li>
+            <li class="list-group-item">Bid: ${{item.starting_bid.bid}} by {{item.starting_bid.user}}</li>
+        </ul>
+        <div class="card-body">
+            <form action="{% url 'bid' item.id%}" method="post">
+                {%csrf_token%}
+                <input type="number" name="bid" step=".01" placeholder="Add Bid">
+                <button type="submit" class="btn btn-primary" style="margin-top: 5px;">Place Bid</button>
+            </form>
+        </div>
+    </div>
+    <div id='comment' class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+            <h4>Comments</h4>
+            {%for comment in comments%}
+            <li class="list-group-item">@{{comment.user}}:   {{comment.comment}}</li>
+            {%endfor%}
+        </ul>
+        <div class="card-body">
+            <form action="{% url 'comment' item.id%}" method="post">
+                {%csrf_token%}
+                <input type="text" name="comment" placeholder="Add Comment">
+                <button type="submit" class="btn btn-primary" style="margin-top: 5px;">Add Comment</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
